@@ -1,23 +1,26 @@
 # Image Processing Using Matrices
 
-Linear Algebra project. Images are treated as matrices and processed with **Python + NumPy**.
-A colour image is an `H × W × 3` array (R, G, B matrices, values 0–255). A grayscale image is one `H × W` matrix.
+Linear Algebra project. An image is a matrix of pixel values (0-255); a colour image is H x W x 3 (R, G, B). Everything is in one file, `app.py`, using Python + NumPy.
 
 | Operation | Formula | NumPy |
 |---|---|---|
-| Grayscale | `G = 0.299R + 0.587G + 0.114B` (matrix–vector product) | `rgb @ [0.299, 0.587, 0.114]` |
-| Brightness | `I' = clip(I + β, 0, 255)` | `np.clip(img + beta, 0, 255)` |
-| Horizontal flip | `I' = I · J`, J = exchange matrix (ones on the anti-diagonal) | `img[:, ::-1]` |
-| Black & white | `B(i,j) = 255 if G(i,j) ≥ T else 0` | `np.where(gray >= T, 255, 0)` |
+| Grayscale | `Gray = 0.299R + 0.587G + 0.114B` | `rgb @ [0.299, 0.587, 0.114]` |
+| Brightness | `I' = clip(I + b, 0, 255)` | `np.clip(img + beta, 0, 255)` |
+| Horizontal flip | `I' = I . J` (J = exchange matrix) | `img[:, ::-1]` |
+| Black & white | `B = 255 if Gray >= T else 0` | `np.where(gray >= T, 255, 0)` |
 
-## Run locally
+## Run on your computer
 ```
 pip install -r requirements.txt -r requirements-local.txt
-python main.py path/to/image.jpg 50 128   # brightness β=50, threshold T=128
+python app.py image.jpg 50 128
 ```
-Results are saved in `output/`.
+Shows the original next to every result and saves them in `output/` (50 = brightness, 128 = threshold).
 
-## Web app (Vercel)
-`public/index.html` is the UI, `api/index.py` (Flask) is the backend, `api/image_ops.py` holds the matrix operations.
-Deploy: import the GitHub repo at vercel.com/new (no settings needed), or `vercel --prod`.
-Note: Vercel limits request bodies to ~4.5 MB, so upload photos under that size.
+## Run the website locally
+```
+python app.py
+```
+Then open http://127.0.0.1:5000
+
+## Deploy on Vercel
+Push to GitHub, import the repo at vercel.com/new, click Deploy. Vercel finds the Flask app in `app.py`. Uploads must be under about 4.5 MB.
